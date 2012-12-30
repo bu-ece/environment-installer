@@ -8,7 +8,8 @@ source ./colors.sh
 #environments supported
 
 ENVIRONMENTS=(
-	"g++/gcc"
+	"g++"
+	"gcc"
 	"gdb"
 	"groovy"
 	"grails"
@@ -38,14 +39,21 @@ function init() {
 }
 
 function print_environment_list() {
+    clear
+    echo_colorn $MAGENTA "(Package #) "
+    echo -n "choose a package to be installed, "
+    echo_colorn $MAGENTA "(Q)uit, "
+    echo_color $MAGENTA "(S)tart Installation"
+    printf "$(color $CYAN '%-5s %-25s %-5s %-20s\n')" "#" "Package" "Y/N" "Current Version"
+
     count=1;
     for i in "${ENVIRONMENTS[@]}"; do
 #        printf "%-5s %5s\n" $(color $MAGENTA "${count}) ") $(color $YELLOW "$i")
         printf "$(color $MAGENTA '%-5s') $(color $YELLOW '%-25s') " "${count}) " "$i"       
         if ${CHOICE_STATUS[((count-1))]}; then
-	    printf "$(color $GREEN '%-5s') " "[x]"
+	        printf "$(color $GREEN '%-5s') " "[x]"
         else
-	    printf "$(color $RED '%-5s') " "[ ]"
+    	    printf "$(color $RED '%-5s') " "[ ]"
         fi
 
 	if ${INSTALLED_STATUS[((count-1))]}; then
@@ -61,10 +69,24 @@ function print_environment_list() {
 
 echo_bold "Welcome to the environment installer!"
 echo "Please select what development tools and environments to install"
+
 init
 INSTALLED_STATUS[2]=true
 CHOICE_STATUS[3]=true
-printf "$(color $CYAN '%-5s %-25s %-5s %-20s\n')" "#" "Package" "Y/N" "Current Version"
-
 print_environment_list
 
+while read choice
+do
+   if [[ $choice == q* ]] || [[ $choice == Q* ]]; then
+        break
+   fi
+   if [[ "$choice" =~ ^[0-9]+$ ]] ; then        
+        current=${CHOICE_STATUS[(($choice-1))]}
+        if $current; then
+           CHOICE_STATUS[(($choice-1))]=false
+        else
+           CHOICE_STATUS[(($choice-1))]=true
+        fi          
+    fi
+   print_environment_list
+done 
