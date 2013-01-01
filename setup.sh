@@ -5,6 +5,10 @@
 #colors
 source ./colors.sh
 
+#load functions to get package versions
+source ./find_versions.sh
+discover_system_info
+
 #environments supported
 
 ENVIRONMENTS=(
@@ -56,8 +60,10 @@ function print_environment_list() {
     	    printf "$(color $RED '%-5s') " "[ ]"
         fi
 
-	if ${INSTALLED_STATUS[((count-1))]}; then
-	    printf "$(color $GREEN '%-20s') \n" "Current Version:"
+        version="$(get_package_version "$i")"
+	if [ "$version" != "Not Installed" ] ; then
+#	if ${INSTALLED_STATUS[((count-1))]}; then
+	    printf "$(color $GREEN '%-20s') \n" "$version"
 	else
 	    printf "$(color $RED '%-20s') \n" "Not Installed"
 	fi	
