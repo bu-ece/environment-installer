@@ -75,9 +75,16 @@ INSTALLED_STATUS[2]=true
 CHOICE_STATUS[3]=true
 print_environment_list
 
+doInstall=false
+
+#Have the user select what packages to install
 while read choice
 do
    if [[ $choice == q* ]] || [[ $choice == Q* ]]; then
+        break
+   fi
+   if [[ $choice == s* ]] || [[ $choice = S* ]]; then
+        doInstall=true
         break
    fi
    if [[ "$choice" =~ ^[0-9]+$ ]] ; then        
@@ -90,3 +97,8 @@ do
     fi
    print_environment_list
 done 
+
+#do the actual installation of packages
+if $doInstall; then
+    echo "Installing selected packages"
+fi
