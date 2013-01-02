@@ -11,9 +11,13 @@ function get_package_version() {
 	case "$package_name" in
 		"gcc" | \
 		"g++" | \
+		"gdb" | \
 		"groovy" | \
 		"grails" | \
-		"gradle" \
+		"gradle" | \
+		"make" | \
+		"maven" | \
+		"ruby" \
 			) echo $("get_${package_name}_version") ;;
 		*) echo "Not Installed" ;;
 	esac
