@@ -7,8 +7,14 @@ function discover_system_info() {
 
 function get_package_version() {
 	package_name=${1};
+	#discover_system_info    
 	case "$package_name" in
-		'gcc') echo $(get_gcc_version);;
-		*) echo "Not Installed"
+		"gcc" | \
+		"g++" | \
+		"groovy" | \
+		"grails" | \
+		"gradle" \
+			) echo $("get_${package_name}_version") ;;
+		*) echo "Not Installed" ;;
 	esac
 }
