@@ -43,8 +43,22 @@ function init() {
     
 }
 
+function cache_versions() {
+    local total=${#ENVIRONMENTS[@]}
+    local count=0
+    for package in "${ENVIRONMENTS[@]}"; do
+        if [ "$package" == "g++" ] ; then package="gpp"; fi
+        local per=$(( ($count + 1) * 100 /$total))
+        echo -ne "\rDetecting versions .............. ${per}%"
+        version=$(get_package_version "$package")
+        eval "${package}_version='$version'"
+        ((count++))
+    done
+    echo ''
+}
+
 function print_environment_list() {
-    clear
+#    clear
     echo_colorn $MAGENTA "(Package #) "
     echo -n "choose a package to be installed, "
     echo_colorn $MAGENTA "(Q)uit, "
@@ -65,7 +79,7 @@ function print_environment_list() {
 	
 	var=$(eval "echo \${${i}_version}")
 	if [ -z "$var" ] ; then 
-	        version=$(get_package_version "$i")
+	    version=$(get_package_version "$i")
 		eval "${i}_version='$version'"
     else
 		version=$var
@@ -81,6 +95,7 @@ function print_environment_list() {
 
 #Prompt
 
+cache_versions
 echo_bold "Welcome to the environment installer!"
 echo "Please select what development tools and environments to install"
 

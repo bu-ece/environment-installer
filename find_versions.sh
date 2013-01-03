@@ -2,7 +2,6 @@ function discover_system_info() {
 	#if mac source osx
 	#if linux source linux
 	source osx/find_version_osx.sh
-	echo "sourced"
 }
 
 
