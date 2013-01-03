@@ -49,7 +49,15 @@ function cache_versions() {
     for package in "${ENVIRONMENTS[@]}"; do
         if [ "$package" == "g++" ] ; then package="gpp"; fi
         local per=$(( ($count + 1) * 100 /$total))
-        echo -ne "\rDetecting versions .............. ${per}%"
+        local dots=()
+        for (( i=0; i < $total; i++ )) ; do
+            if [ "$i" -le "$count" ] ; then
+                dots+=('.')
+            else
+                dots+=(' ')
+            fi
+        done
+        echo -ne "\rDetecting versions ${dots[@]} ${per}%"
         version=$(get_package_version "$package")
         eval "${package}_version='$version'"
         ((count++))
