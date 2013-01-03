@@ -7,8 +7,9 @@ source ./colors.sh
 
 #load functions to get package versions
 source ./find_versions.sh
-discover_system_info
+source ./osx/find_version_osx.sh
 
+discover_system_info
 #environments supported
 ENVIRONMENTS=(
 	"g++"
@@ -25,8 +26,8 @@ ENVIRONMENTS=(
 	"git"
 	"java"
 	"mysql"
-	"apache server"
-	"apache tomcat"
+#	"apache server"
+#	"apache tomcat"
 )
 
 INSTALLED_STATUS=()
@@ -34,11 +35,12 @@ CHOICE_STATUS=()
 function init() {
     local total=${#ENVIRONMENTS[@]}
     for ((ii=0 ; ii < total; ii++)); do
-	    INSTALLED_STATUS+=(false)
+	    INSTALLED_STATUS+=(false)    
     done
     for ((ii=0 ; ii < total; ii++)); do
             CHOICE_STATUS+=(false)
     done
+    
 }
 
 function print_environment_list() {
@@ -51,17 +53,24 @@ function print_environment_list() {
 
     count=1;
     for i in "${ENVIRONMENTS[@]}"; do
-#        printf "%-5s %5s\n" $(color $MAGENTA "${count}) ") $(color $YELLOW "$i")
+	if [ "$i" == "g++" ] ; then
+		i="gpp"
+	fi
         printf "$(color $MAGENTA '%-5s') $(color $YELLOW '%-25s') " "${count}) " "$i"       
         if ${CHOICE_STATUS[((count-1))]}; then
-	        printf "$(color $GREEN '%-5s') " "[x]"
+            printf "$(color $GREEN '%-5s') " "[x]"
         else
     	    printf "$(color $RED '%-5s') " "[ ]"
         fi
-
-        version=$(get_package_version "$i")
+	
+	var=$(eval "echo \${${i}_version}")
+	if [ -z "$var" ] ; then 
+	        version=$(get_package_version "$i")
+		eval "${i}_version='$version'"
+    else
+		version=$var
+	fi
 	if [ "$version" != "Not Installed" ] ; then
-#	if ${INSTALLED_STATUS[((count-1))]}; then
 	    printf "$(color $GREEN '%-20s') \n" "$version"
 	else
 	    printf "$(color $RED '%-20s') \n" "Not Installed"

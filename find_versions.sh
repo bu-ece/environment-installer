@@ -2,17 +2,17 @@ function discover_system_info() {
 	#if mac source osx
 	#if linux source linux
 	source osx/find_version_osx.sh
+	echo "sourced"
 }
 
 
 function get_package_version() {
 	package_name=${1};
-	#discover_system_info    
 	case "$package_name" in
 		"gcc" | \
-		"g++" | \
-		"gdb" | \
-		"groovy" | \
+		"gpp" | \
+        "gdb" | \
+        "groovy" | \
 		"grails" | \
 		"gradle" | \
 		"make" | \
