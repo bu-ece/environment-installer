@@ -49,3 +49,7 @@ function get_git_version() {
 function get_java_version() {
 	echo $(java -version 2>&1 |grep version | sed -E 's_.*version "([0-9\._]+)"_\1_g')
 }
+
+function get_mysql_version(){
+	echo $(mysql --version |sed -E "s:.*Distrib ([0-9\._]+).*:\1:g")
+}

@@ -20,7 +20,8 @@ function get_package_version() {
 		"ruby" | \
 		"svn" | \
 		"git" | \
-		"java" \
+		"java" | \
+		"mysql" \
 			) echo $("get_${package_name}_version") ;;
 		*) echo "Not Installed" ;;
 	esac
