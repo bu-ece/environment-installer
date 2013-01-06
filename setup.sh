@@ -59,7 +59,7 @@ function cache_versions() {
         done
         echo -ne "\rDetecting versions ${dots[@]} ${per}%"
         version=$(get_package_version "$package")
-        eval "${package}_version='$version'"
+        eval "_${package}_version='$version'"
         ((count++))
     done
     echo ''
@@ -85,11 +85,11 @@ function print_environment_list() {
     	    printf "$(color $RED '%-5s') " "[ ]"
         fi
 	
-	var=$(eval "echo \${${i}_version}")
+	var=$(eval "echo \${_${i}_version}")
 	if [ -z "$var" ] ; then 
 	    version=$(get_package_version "$i")
-		eval "${i}_version='$version'"
-    else
+		eval "_${i}_version='$version'"
+    	else
 		version=$var
 	fi
 	if [ "$version" != "Not Installed" ] ; then
